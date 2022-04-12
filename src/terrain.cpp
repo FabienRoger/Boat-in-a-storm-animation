@@ -15,6 +15,7 @@ void Terrain::initialize(int N_terrain_samples, float terrain_length) {
 // Evaluate 3D position of the terrain for any (u,v) \in [0,1]
 float Terrain::evaluate_terrain_height(float x, float y)
 {
+    x *= 2;
     vec2 p_0 = { 0, 0 };
     float h_0 = 2.0f;
     float sigma_0 = 3.0f;

@@ -32,6 +32,19 @@ uniform float specular_exp; // Specular exponent
 
 uniform mat4 view;       // View matrix (rigid transform) of the camera - to compute the camera position
 
+const float minFogDist = 3;
+const float maxDist = 100;
+const vec3 backgroundColor = {0.2,0.2,0.2};
+const float PI = 3.1415926535;
+
+float getFog(float distanceToCam){
+	if(distanceToCam > maxDist)return 1;
+	if(distanceToCam < minFogDist)return 0;
+	float normalizedDist = (distanceToCam - minFogDist) / (maxDist - minFogDist);
+	// return sin(normalizedDist * PI / 2);
+	return sin(normalizedDist * PI / 2);
+}
+
 void main()
 {
 
@@ -86,8 +99,13 @@ void main()
 	// Compute the final shaded color using Phong model
 	vec3 color_shading = (Ka + Kd * diffuse) * color_object + Ks * specular * vec3(1.0, 1.0, 1.0);
 	
+	// Compute color with fog
+	float distToCam = length(camera_position-fragment.position);
+	float fog = getFog(distToCam);
+	vec3 color_fog = backgroundColor * fog + (1 - fog) * color_shading;
+
 	// Output color, with the alpha component
-	FragColor = vec4(color_shading, alpha * color_image_texture.a);
+	FragColor = vec4(color_fog, alpha * color_image_texture.a);
 
 
 }

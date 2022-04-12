@@ -2,6 +2,7 @@
 
 #include "cgp/cgp.hpp"
 #include "terrain.hpp"
+#include "rain.hpp"
 
 
 // The element of the GUI that are not already stored in other structures
@@ -27,6 +28,7 @@ struct scene_structure {
 	
 
 	Terrain terrain;
+	Rain rain;
 
 
 	// ****************************** //
@@ -36,7 +38,7 @@ struct scene_structure {
 	void initialize();  // Standard initialization to be called before the animation loop
 	void display();     // The frame display to be called within the animation loop
 	void display_gui(); // The display of the GUI, also called within the animation loop
-
+	void display_semiTransparent();
 
 };
 
