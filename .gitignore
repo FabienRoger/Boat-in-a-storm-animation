@@ -1,0 +1,8 @@
+.vscode
+.vs
+out
+*.exe
+*.ilk
+*.pdb
+*.ini
+library
