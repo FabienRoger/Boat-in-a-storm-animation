@@ -1,7 +1,6 @@
 #include "scene.hpp"
 
 #include "terrain.hpp"
-#include "tree.hpp"
 
 using namespace cgp;
 
@@ -16,10 +15,7 @@ void scene_structure::initialize()
 
 	int N_terrain_samples = 100;
 	float terrain_length = 20;
-	mesh const terrain_mesh = create_terrain_mesh(N_terrain_samples, terrain_length);
-	terrain.initialize(terrain_mesh, "terrain");
-	terrain.shading.color = { 0.6f,0.85f,0.5f };
-	terrain.shading.phong.specular = 0.0f; // non-specular terrain material
+	terrain.initialize(N_terrain_samples, terrain_length);
 
 }
 
@@ -35,9 +31,9 @@ void scene_structure::display()
 	if (gui.display_frame)
 		draw(global_frame, environment);
 
-	draw(terrain, environment);
+	draw(terrain.mesh_drawable, environment);
 	if (gui.display_wireframe)
-		draw_wireframe(terrain, environment);
+		draw_wireframe(terrain.mesh_drawable, environment);
 
 }
 

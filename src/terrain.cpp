@@ -1,11 +1,19 @@
 
 #include "terrain.hpp"
+#include "cgp/cgp.hpp"
 
 
 using namespace cgp;
 
+void Terrain::initialize(int N_terrain_samples, float terrain_length) {
+    mesh const terrain_mesh = create_terrain_mesh(N_terrain_samples, terrain_length);
+    mesh_drawable.initialize(terrain_mesh, "terrain");
+    mesh_drawable.shading.color = { 0.6f,0.85f,0.5f };
+    mesh_drawable.shading.phong.specular = 0.0f; // non-specular terrain material
+}
+
 // Evaluate 3D position of the terrain for any (u,v) \in [0,1]
-float evaluate_terrain_height(float x, float y)
+float Terrain::evaluate_terrain_height(float x, float y)
 {
     vec2 p_0 = { 0, 0 };
     float h_0 = 2.0f;
@@ -18,7 +26,7 @@ float evaluate_terrain_height(float x, float y)
     return z;
 }
 
-mesh create_terrain_mesh(int N, float terrain_length)
+mesh Terrain::create_terrain_mesh(int N, float terrain_length)
 {
 
     mesh terrain; // temporary terrain storage (CPU only)

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cgp/cgp.hpp"
+#include "terrain.hpp"
+
 
 // The element of the GUI that are not already stored in other structures
 struct gui_parameters {
@@ -23,7 +25,8 @@ struct scene_structure {
 
 	gui_parameters gui;                       // Standard GUI element storage
 	
-	cgp::mesh_drawable terrain;
+
+	Terrain terrain;
 
 
 	// ****************************** //
