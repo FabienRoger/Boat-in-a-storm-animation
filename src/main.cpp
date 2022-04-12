@@ -83,11 +83,13 @@ void window_size_callback(GLFWwindow* , int width, int height)
 // This function is called everytime the mouse is moved
 void mouse_move_callback(GLFWwindow* /*window*/, double xpos, double ypos)
 {
-	scene.inputs.mouse_position_update( { xpos, ypos } );
+	scene.inputs.mouse_position_update({ xpos, ypos });
 
 	// Apply camera rotation only if shift is not pressed
-	if (!scene.inputs.keyboard.shift)
+	if (!scene.inputs.keyboard.shift) {
 		camera_standard_behavior_rotation(scene.environment.camera, scene.inputs);
+		scene.environment.camera.theta = std::max(std::min(scene.environment.camera.theta, cgp::Pi * 0.45f), 0.0f);
+	}
 }
 
 // This function is called everytime a mouse button is clicked/released
