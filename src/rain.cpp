@@ -22,5 +22,10 @@ void Rain::draw(scene_environment_basic_camera_spherical_coords& environment) {
 	rotation_transform R = rotation_transform::between_vector({ 1,0,0 }, { 0,1,0 }, right, front);
 	mesh_drawable.transform.rotation = R;
 
+	timer.update();
+	float t = timer.t;
+	float deltay = std::fmod(t, 1);
+	mesh_drawable.update_uv({ {0,deltay},{1,deltay},{1,1+ deltay},{0,1+ deltay} });
+
 	cgp::draw(mesh_drawable, environment);
 }
