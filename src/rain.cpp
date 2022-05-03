@@ -1,6 +1,9 @@
 
 #include "rain.hpp"
 #include "cgp/cgp.hpp"
+#include "utils.hpp"
+
+#include <vector>
 
 using namespace cgp;
 
@@ -8,11 +11,21 @@ void Rain::initialize() {
 	auto texture = opengl_load_texture_image("assets/rain.png", GL_REPEAT,
 		GL_REPEAT);
 	float size = 10.0f;
-	mesh quad_mesh = mesh_primitive_quadrangle({ -size,0,0 }, { size,0,0 }, { size,0,2 * size }, { -size,0,2 * size });
+	float hsize = 2.0f;
+	mesh quad_mesh = mesh_primitive_quadrangle({ -hsize,0,0 }, { hsize,0,0 }, { hsize,0,2 * size }, { -hsize,0,2 * size });
 	mesh_drawable.initialize(quad_mesh);
 	// mesh_drawable.shading.color = { 0.6f,0.85f,0.5f };
 	// mesh_drawable.shading.phong = { 0.4f, 0.6f,0,1 };
 	mesh_drawable.texture = texture;
+
+	positions.resize(nbRain);
+	rainOffset.resize(nbRain);
+	for (int i = 0; i < nbRain; i++)
+	{
+		positions[i] = 20 * (1 + random()) * vec3(randUnitVec2(),0);
+		rainOffset[i] = random();
+	}
+
 }
 
 void Rain::draw(scene_environment_basic_camera_spherical_coords& environment) {
@@ -24,8 +37,13 @@ void Rain::draw(scene_environment_basic_camera_spherical_coords& environment) {
 
 	timer.update();
 	float t = timer.t;
-	float deltay = std::fmod(t, 1);
-	mesh_drawable.update_uv({ {0,deltay},{1,deltay},{1,1+ deltay},{0,1+ deltay} });
 
+	for (int i = 0; i < nbRain; i++)
+	{
+		mesh_drawable.transform.translation = vec3(environment.camera.position().xy(), 0) + positions[i];
+		float deltay = std::fmod(t + rainOffset[i], 1);
+		mesh_drawable.update_uv({ {0,deltay},{1,deltay},{1,1 + deltay},{0,1 + deltay} });
+		cgp::draw(mesh_drawable, environment);
+	}
 	cgp::draw(mesh_drawable, environment);
 }
