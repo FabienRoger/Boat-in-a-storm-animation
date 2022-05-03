@@ -51,7 +51,7 @@ int main(int, char* argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		// Reset the screen for a new frame
-		helper_common.frame_begin(scene.environment.background_color, window, scene.inputs.window, scene.inputs.mouse.on_gui);
+		helper_common.frame_begin(scene.environment.actualBackgroundColor(), window, scene.inputs.window, scene.inputs.mouse.on_gui);
 		scene.environment.projection.update_aspect_ratio(scene.inputs.window.aspect_ratio());
 		
 		// Display the ImGUI interface (button, sliders, etc)

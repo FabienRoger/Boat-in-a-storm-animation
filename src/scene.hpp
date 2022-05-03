@@ -3,6 +3,7 @@
 #include "cgp/cgp.hpp"
 #include "terrain.hpp"
 #include "rain.hpp"
+#include "stormEnvironment.hpp"
 
 
 // The element of the GUI that are not already stored in other structures
@@ -21,7 +22,7 @@ struct scene_structure {
 	// ****************************** //
 
 	cgp::mesh_drawable global_frame;          // The standard global frame
-	cgp::scene_environment_basic_camera_spherical_coords environment; // Standard environment controler
+	StormEnvironment environment; // Standard environment controler
 	cgp::inputs_interaction_parameters inputs; // Storage for inputs status (mouse, keyboard, window dimension)
 
 	gui_parameters gui;                       // Standard GUI element storage

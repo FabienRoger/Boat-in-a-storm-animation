@@ -19,6 +19,7 @@ uniform sampler2D image_texture;
 
 // Uniform values - must be send from the C++ code
 uniform vec3 light; // position of the light
+uniform float lightIntensity; // position of the light
 
 // Shape color
 uniform vec3 color;   // Uniform color of the object
@@ -34,7 +35,8 @@ uniform mat4 view;       // View matrix (rigid transform) of the camera - to com
 
 const float minFogDist = 3;
 const float maxDist = 100;
-const vec3 backgroundColor = {0.2,0.2,0.2};
+const vec3 backgroundColor = vec3(0.2,0.2,0.2);
+const vec3 white = vec3(1,1,1);
 const float PI = 3.1415926535;
 
 float getFog(float distanceToCam){
@@ -102,10 +104,16 @@ void main()
 	// Compute color with fog
 	float distToCam = length(camera_position-fragment.position);
 	float fog = getFog(distToCam);
-	vec3 color_fog = backgroundColor * fog + (1 - fog) * color_shading;
+
+
+	float globalLightIntensity = lightIntensity/3.0;
+
+	vec3 color_shading_illuminated = (1 - globalLightIntensity) * color_shading + globalLightIntensity * white;
+	
+	vec3 actualBackgroundColor = (1 - lightIntensity) * backgroundColor + lightIntensity * white;
+
+	vec3 color_fog = actualBackgroundColor * fog + (1 - fog) * color_shading_illuminated;
 
 	// Output color, with the alpha component
 	FragColor = vec4(color_fog, alpha * color_image_texture.a);
-
-
 }

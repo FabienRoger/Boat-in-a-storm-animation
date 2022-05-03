@@ -13,6 +13,8 @@ void scene_structure::initialize()
 	environment.camera.axis = camera_spherical_coordinates_axis::z;
 	environment.camera.look_at({ 15.0f,6.0f,6.0f }, { 0,0,0 });
 
+	environment.light = environment.camera.position();
+
 	environment.background_color = { 0.2,0.2,0.2 };
 
 	int N_terrain_samples = 400;
@@ -31,7 +33,7 @@ void scene_structure::display()
 {
 
 	// Basic elements of the scene
-	environment.light = environment.camera.position();
+	environment.update();
 	if (gui.display_frame)
 		draw(global_frame, environment);
 
