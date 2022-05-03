@@ -3,6 +3,7 @@
 #include "cgp/cgp.hpp"
 #include "terrain.hpp"
 #include "rain.hpp"
+#include "boat.hpp"
 #include "stormEnvironment.hpp"
 
 
@@ -30,6 +31,7 @@ struct scene_structure {
 
 	Terrain terrain;
 	Rain rain;
+	Boat boat;
 
 
 	// ****************************** //

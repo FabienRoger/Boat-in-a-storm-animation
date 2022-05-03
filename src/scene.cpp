@@ -22,6 +22,7 @@ void scene_structure::initialize()
 	
 	terrain.initialize(N_terrain_samples, terrain_length);
 	rain.initialize();
+	boat.initialize();
 
 }
 
@@ -41,6 +42,8 @@ void scene_structure::display()
 	if (gui.display_wireframe)
 		draw_wireframe(terrain.mesh_drawable, environment);
 	
+	boat.draw(environment);
+
 	display_semiTransparent();
 
 }
