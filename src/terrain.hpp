@@ -5,17 +5,25 @@
 
 class Terrain {
 public:
-
+	using environmentType = cgp::scene_environment_basic_camera_spherical_coords;
 	cgp::mesh_drawable mesh_drawable;
+	cgp::mesh terrain_mesh;
+	int N_terrain_samples = 200;
+	float terrain_length = 100;
+	cgp::timer_basic timer;
 
-	void initialize(int N_terrain_samples, float terrain_length);
+	void initialize();
 
-	float evaluate_terrain_height(float x, float y);
+	float evaluate_terrain_height(float x, float y, float t);
 
 	/** Compute a terrain mesh
 		The (x,y) coordinates of the terrain are set in [-length/2, length/2].
 		The z coordinates of the vertices are computed using evaluate_terrain_height(x,y).
 		The vertices are sampled along a regular grid structure in (x,y) directions.
 		The total number of vertices is N*N (N along each direction x/y) 	*/
-	cgp::mesh create_terrain_mesh(int N, float length);
+	void update_terrain_mesh(float t);
+
+	void displayTerrain(environmentType const& environment);
+	void create_empty_terrain();
+	int logger = 0;
 };

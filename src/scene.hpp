@@ -25,7 +25,6 @@ struct scene_structure {
 	cgp::inputs_interaction_parameters inputs; // Storage for inputs status (mouse, keyboard, window dimension)
 
 	gui_parameters gui;                       // Standard GUI element storage
-	
 
 	Terrain terrain;
 	Rain rain;

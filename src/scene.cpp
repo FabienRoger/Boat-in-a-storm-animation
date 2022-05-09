@@ -1,5 +1,5 @@
 #include "scene.hpp"
-
+#include <iostream>  
 #include "terrain.hpp"
 
 using namespace cgp;
@@ -8,17 +8,13 @@ void scene_structure::initialize()
 {
 	// Basic set-up
 	// ***************************************** //
-
 	global_frame.initialize(mesh_primitive_frame(), "Frame");
 	environment.camera.axis = camera_spherical_coordinates_axis::z;
 	environment.camera.look_at({ 15.0f,6.0f,6.0f }, { 0,0,0 });
 
 	environment.background_color = { 0.2,0.2,0.2 };
-
-	int N_terrain_samples = 400;
-	float terrain_length = 200;
 	
-	terrain.initialize(N_terrain_samples, terrain_length);
+	terrain.initialize();
 	rain.initialize();
 
 }
@@ -35,9 +31,8 @@ void scene_structure::display()
 	if (gui.display_frame)
 		draw(global_frame, environment);
 
-	draw(terrain.mesh_drawable, environment);
-	if (gui.display_wireframe)
-		draw_wireframe(terrain.mesh_drawable, environment);
+	terrain.displayTerrain(environment);
+	//draw(terrain.mesh_drawable, environment);
 	
 	display_semiTransparent();
 

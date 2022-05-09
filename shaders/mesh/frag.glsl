@@ -34,7 +34,7 @@ uniform mat4 view;       // View matrix (rigid transform) of the camera - to com
 
 const float minFogDist = 3;
 const float maxDist = 100;
-const vec3 backgroundColor = {0.2,0.2,0.2};
+const vec3 backgroundColor = vec3(0.2,0.2,0.2);
 const float PI = 3.1415926535;
 
 float getFog(float distanceToCam){
