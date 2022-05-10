@@ -56,18 +56,20 @@ void Boat::generateStartSail() {
 		}
 	}
 
-	sail_mesh.position.resize(nbPoints);
+	sail_mesh.position.resize(2*nbPoints);
 	int point = 0;
 	for (int i = 0; i < nbVertical; i++)
 	{
 		for (int j = 0; j < nbHorizontal - i; j++)
 		{
-			sail_mesh.position[point] = sailPositions[i][j];
+			// double points to have different normals for both
+			sail_mesh.position[2*point] = sailPositions[i][j]; // point "on one side"
+			sail_mesh.position[2*point+1] = sailPositions[i][j]; // point "on the other"
 			point++;
 		}
 	}
 
-	//Création des triangles:
+	//Crï¿½ation des triangles:
 	point = -1;
 	for (int i = 0; i < nbVertical; i++)
 	{
@@ -76,26 +78,36 @@ void Boat::generateStartSail() {
 			point++;
 			if (i == 0)continue;
 			if (j == nbHorizontal - i - 1) {
+				int u = point;
+				int v = point - (nbHorizontal - i);
+				int w = point - (nbHorizontal - i) - 1;
 				sail_mesh.connectivity.push_back(
-					{ point, point - (nbHorizontal - i), point - (nbHorizontal - i) - 1 }
+					{ 2 * u, 2 * v, 2 * w }
 				);
 				sail_mesh.connectivity.push_back(
-					{ point, point - (nbHorizontal - i) -1, point - (nbHorizontal - i)}
+					{ 2 * u + 1, 2 * v + 1, 2 * w + 1}
 				);
 			}
 			if (j > 0) {
+				int u = point;
+				int v = point - (nbHorizontal - i) - 1;
+				int w = point - (nbHorizontal - i) - 2;
 				sail_mesh.connectivity.push_back(
-					{ point, point - (nbHorizontal - i) - 2, point - (nbHorizontal - i) - 1 }
+					{ 2 * u, 2 * v, 2 * w }
 				);
 				sail_mesh.connectivity.push_back(
-					{ point, point - (nbHorizontal - i) - 1, point - (nbHorizontal - i) - 2 }
+					{ 2 * u + 1, 2 * v + 1, 2 * w + 1 }
 				);
 
+				u = point - 1;
+				v = point;
+				w = point - (nbHorizontal - i) - 2;
+
 				sail_mesh.connectivity.push_back(
-					{ point, point - 1, point - (nbHorizontal - i) - 2 }
+					{ 2 * u, 2 * v, 2 * w }
 				);
 				sail_mesh.connectivity.push_back(
-					{ point, point - (nbHorizontal - i) - 2, point - 1 }
+					{ 2 * u + 1, 2 * v + 1, 2 * w + 1 }
 				);
 			}
 		}
@@ -164,12 +176,14 @@ void Boat::update_sail()
 	{
 		for (int j = 0; j < nbHorizontal - i; j++)
 		{
-			sail_mesh.position[point] = sailPositions[i][j] + position;
+			sail_mesh.position[2 * point] = sailPositions[i][j] + position;
+			sail_mesh.position[2*point+1] = sailPositions[i][j] + position;
 			point++;
 		}
 	}
 
-	sail_mesh.compute_normal();//Ne pas oublier les normales du mesh évoluent - PI
-	sail_mesh_drawable.update_position(sail_mesh.position);//Mise à jour des positions - PI
+	sail_mesh.compute_normal();//Ne pas oublier les normales du mesh Ã©voluent - PI
+	sail_mesh_drawable.update_position(sail_mesh.position);//Mise Ã  jour des positions - PI
 	sail_mesh_drawable.update_normal(sail_mesh.normal);//et des normales. - PI
+	cout << sail_mesh.normal << endl;
 }
