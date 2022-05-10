@@ -21,15 +21,23 @@ void Terrain::initialize() {
     //Fonction d'initialisation
     create_empty_terrain(); 
     mesh_drawable.initialize(terrain_mesh, "terrain");
-    mesh_drawable.shading.color = { 0.1f,0.1f,0.8f };//Couleur de l'eau
+    //mesh_drawable.shading.color = { 0.1f,0.1f,0.8f };//Couleur de l'eau
     mesh_drawable.shading.phong.specular = 0.2f; //à définir pour l'eau
+    GLuint const texture_image_id = opengl_load_texture_image("assets/water_texture.jpg",
+        GL_REPEAT,
+        GL_REPEAT);
+    mesh_drawable.texture = texture_image_id;
 }
 
 float Terrain::evaluate_terrain_height(float x, float y, float t)
 {
     //Calcule la hauteur d'un point de coordonnée xy au temps t
-    float h_0 = 2.0f;
-    float z = h_0 * std::cos(0.01*(x*x + y*y + 50*t));// PI
+    float h_0 = 5.0f;
+    float omega = 0.1f;
+    float A = 0.2f;
+    float B = 0.5f;
+
+    float z = h_0 - h_0 * std::max(std::abs(std::cos(x * omega - A*t)), 0.05f) + B * noise_perlin({ 0.3*x,0.3*y,0.5*t }, 3, 0.02f, 5.0f); //x octave persistency, frequency gain
     return z;
 }
 
@@ -49,17 +57,19 @@ void Terrain::update_terrain_mesh(float t)
     {
         for(int kv=0; kv<N; ++kv)
         {
+            int k = kv + N * ku;
             float x = (ku / (N - 1.0f) - 0.5f) * terrain_length;
             float y = (kv / (N - 1.0f) - 0.5f) * terrain_length;
 
             float z = evaluate_terrain_height(x,y, t); // PI
 
-            terrain_mesh.position[kv + N * ku].z = z;
+            terrain_mesh.position[k].z = z;
         }
     }
     terrain_mesh.compute_normal();//Ne pas oublier les normales du mesh évoluent - PI
     mesh_drawable.update_position(terrain_mesh.position);//Mise à jour des positions - PI
     mesh_drawable.update_normal(terrain_mesh.normal);//et des normales. - PI
+    //mesh_drawable.update_color(terrain_mesh.color);
 }
 
 void Terrain::create_empty_terrain()
@@ -68,6 +78,7 @@ void Terrain::create_empty_terrain()
     //Passer par mesh_primitive_grid consomme un petit plus de ressource lors de l'update
     int N = N_terrain_samples;
     terrain_mesh.position.resize(N * N);
+    terrain_mesh.uv.resize(N * N);
 
     for (int ku = 0; ku < N; ++ku)
     {
@@ -80,6 +91,7 @@ void Terrain::create_empty_terrain()
             float y = (v - 0.5f) * terrain_length;
 
             terrain_mesh.position[kv + N * ku] = { x,y,0.0f};
+            terrain_mesh.uv[kv + N * ku] = { 20*u,20*v };
         }
     }
 

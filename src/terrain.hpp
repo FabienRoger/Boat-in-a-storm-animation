@@ -8,8 +8,8 @@ public:
 	using environmentType = cgp::scene_environment_basic_camera_spherical_coords;
 	cgp::mesh_drawable mesh_drawable;
 	cgp::mesh terrain_mesh;
-	int N_terrain_samples = 200;
-	float terrain_length = 100;
+	int N_terrain_samples = 150;
+	float terrain_length = 60;
 	cgp::timer_basic timer;
 
 	void initialize();

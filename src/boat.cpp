@@ -10,7 +10,7 @@ using namespace std;
 
 void Boat::initialize()
 {
-	mesh boatMesh = mesh_load_file_obj("assets/boat.obj");
+	mesh boatMesh = mesh_load_file_obj("assets/low_poly_boat.obj");
 	boat_mesh.initialize(boatMesh, "boat mesh");
 	boat_mesh.transform.scaling = .08f;
 	boat_mesh.transform.translation = { -0,0,0.5f };
