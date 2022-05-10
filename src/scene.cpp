@@ -35,7 +35,6 @@ void scene_structure::display()
 		draw(global_frame, environment);
 
 	terrain.displayTerrain(environment);
-	//draw(terrain.mesh_drawable, environment);
 	
 	boat.draw(environment);
 
