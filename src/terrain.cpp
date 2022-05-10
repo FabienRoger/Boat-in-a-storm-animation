@@ -1,6 +1,16 @@
 // Nathan - PI = pas d'impact significatif sur les performances
 // Gros pb de perf: pour avoir un océan pas trop dégueu il faut 200 samples mais fps vers 30
 
+//Passer par un shader ? tester https://github.com/drohmer/CGP/tree/main/scenes/examples/03_shader_effects/01_shader_deformation
+// et si plus éfficace, implémenter
+
+//Beaucoup de triangles quand même
+//si on se sert de la forme juste pour la houle, on peut, à l'aide de la dérivée, choisir de détailler certains carrés plus que 
+//d'autres. Il faut que le nombre de triangle reste constant (par ex 10 000 triangles de base et on en coupe en deux 2000.
+
+//autre idée (compatible mais ça devient hardcore) c'est de prendre une surface au nombre de triangles constant mais la plaquer sous la camera en temps réel.
+
+
 #include "terrain.hpp"
 #include "cgp/cgp.hpp"
 
@@ -26,7 +36,8 @@ float Terrain::evaluate_terrain_height(float x, float y, float t)
 void Terrain::displayTerrain(environmentType const& environment) {
     timer.update();
     update_terrain_mesh(timer.t);
-    draw(mesh_drawable, environment);
+    draw(mesh_drawable, environment);// fonction qui consomme à mort la ressource
+    //draw_wireframe(mesh_drawable, environment);
 }
 
 
@@ -54,6 +65,7 @@ void Terrain::update_terrain_mesh(float t)
 void Terrain::create_empty_terrain()
 {
     //Crée un mesh de taille N*N en initialisant les points à une hauteur de 0;
+    //Passer par mesh_primitive_grid consomme un petit plus de ressource lors de l'update
     int N = N_terrain_samples;
     terrain_mesh.position.resize(N * N);
 
