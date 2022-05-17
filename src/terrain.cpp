@@ -23,10 +23,11 @@ void Terrain::initialize() {
     mesh_drawable.initialize(terrain_mesh, "terrain");
     //mesh_drawable.shading.color = { 0.1f,0.1f,0.8f };//Couleur de l'eau
     mesh_drawable.shading.phong.specular = 0.2f; //à définir pour l'eau
-    GLuint const texture_image_id = opengl_load_texture_image("assets/water_texture.jpg",
-        GL_REPEAT,
-        GL_REPEAT);
-    mesh_drawable.texture = texture_image_id;
+    //GLuint const texture_image_id = opengl_load_texture_image("assets/water_texture.jpg",
+        //GL_REPEAT,
+        //GL_REPEAT);
+    //mesh_drawable.texture = texture_image_id;
+    mesh_drawable.shading.color = { 0.1f,0.1f,0.9f };
 }
 
 float Terrain::evaluate_terrain_height(float x, float y, float t)
