@@ -13,7 +13,7 @@
 
 #include "terrain.hpp"
 #include "cgp/cgp.hpp"
-
+#include "utils.hpp"
 
 using namespace cgp;
 
@@ -21,8 +21,10 @@ void Terrain::initialize() {
     //Fonction d'initialisation
     create_empty_terrain(); 
     mesh_drawable.initialize(terrain_mesh, "terrain");
+    auto shader = opengl_load_shader("shaders/ocean/vert.glsl", "shaders/ocean/frag.glsl");
+    mesh_drawable.shader = shader;
     //mesh_drawable.shading.color = { 0.1f,0.1f,0.8f };//Couleur de l'eau
-    mesh_drawable.shading.phong.specular = 0.2f; //à définir pour l'eau
+    mesh_drawable.shading.phong.specular = 0.4f; //à définir pour l'eau
     //GLuint const texture_image_id = opengl_load_texture_image("assets/water_texture.jpg",
         //GL_REPEAT,
         //GL_REPEAT);
@@ -36,9 +38,9 @@ float Terrain::evaluate_terrain_height(float x, float y, float t)
     float h_0 = 5.0f;
     float omega = 0.1f;
     float A = 0.2f;
-    float B = 0.5f;
+    float B = 1.0f;
 
-    float z = h_0 - h_0 * std::max(std::abs(std::cos(x * omega - A*t)), 0.05f) + B * noise_perlin({ 0.3*x,0.3*y,0.5*t }, 3, 0.02f, 5.0f); //x octave persistency, frequency gain
+    float z = h_0 - h_0 * std::max(std::abs(std::cos(x * omega + A*t)), 0.05f) + B * noise_perlin({ 0.3*x,0.3*y,0.5*t }, 3, 0.02f, 5.0f); //x octave persistency, frequency gain
     return z;
 }
 
@@ -59,8 +61,10 @@ void Terrain::update_terrain_mesh(float t)
         for(int kv=0; kv<N; ++kv)
         {
             int k = kv + N * ku;
-            float x = (ku / (N - 1.0f) - 0.5f) * terrain_length;
-            float y = (kv / (N - 1.0f) - 0.5f) * terrain_length;
+            float x = terrain_mesh.position[k].x;
+            float y = terrain_mesh.position[k].y;
+            //float x = (ku / (N - 1.0f) - 0.5f) * terrain_length;
+            //float y = (kv / (N - 1.0f) - 0.5f) * terrain_length;
 
             float z = evaluate_terrain_height(x,y, t); // PI
 
@@ -88,8 +92,8 @@ void Terrain::create_empty_terrain()
             float u = ku / (N - 1.0f);
             float v = kv / (N - 1.0f);
 
-            float x = (u - 0.5f) * terrain_length;
-            float y = (v - 0.5f) * terrain_length;
+            float x = (u - 0.5f) * terrain_length + random();
+            float y = (v - 0.5f) * terrain_length + random();
 
             terrain_mesh.position[kv + N * ku] = { x,y,0.0f};
             terrain_mesh.uv[kv + N * ku] = { 20*u,20*v };

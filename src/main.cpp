@@ -55,7 +55,7 @@ int main(int, char* argv[])
 		scene.environment.projection.update_aspect_ratio(scene.inputs.window.aspect_ratio());
 		
 		// Display the ImGUI interface (button, sliders, etc)
-		scene.display_gui();
+		//scene.display_gui();
 
 		// Call the display of the scene
 		scene.display();
@@ -65,7 +65,7 @@ int main(int, char* argv[])
 	}
 	
 	// Cleanup
-	cgp::imgui_cleanup();
+	//cgp::imgui_cleanup();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
