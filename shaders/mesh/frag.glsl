@@ -20,6 +20,7 @@ uniform sampler2D image_texture;
 // Uniform values - must be send from the C++ code
 uniform vec3 light; // position of the light
 uniform float lightIntensity; // position of the light
+uniform vec3 lightningDirection; // direction of the lightning
 
 // Shape color
 uniform vec3 color;   // Uniform color of the object
@@ -106,7 +107,7 @@ void main()
 	float fog = getFog(distToCam);
 
 
-	float globalLightIntensity = lightIntensity/3.0;
+	float globalLightIntensity = min(1, lightIntensity * 0.2f + lightIntensity * dot(lightningDirection, N) * 2.0f);
 
 	vec3 color_shading_illuminated = (1 - globalLightIntensity) * color_shading + globalLightIntensity * white;
 	

@@ -36,6 +36,7 @@ void scene_structure::display()
 
 	terrain.displayTerrain(environment);
 	
+	boat.update(terrain);
 	boat.draw(environment);
 
 	display_semiTransparent();
