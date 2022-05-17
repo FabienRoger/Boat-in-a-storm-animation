@@ -25,6 +25,7 @@ void Rain::initialize() {
 		positions[i] = 20 * (0.5 + random()) * vec3(randUnitVec2(),0);
 		rainOffset[i] = random();
 	}
+	
 
 }
 
