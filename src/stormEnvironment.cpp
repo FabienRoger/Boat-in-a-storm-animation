@@ -24,7 +24,7 @@ vec3 StormEnvironment::actualBackgroundColor() {
 
 void StormEnvironment::update() {
     timer.update();
-    float t = std::fmod(timer.t, 1);
-    //lightIntensity = t < 0.2 ? (1 - 5 * t) : 0;
-    lightIntensity = t < 0.5 ? 1 : 0;
+    float t = std::fmod(timer.t, 10);
+    lightIntensity = t < 0.2 ? (1 - 5 * t) : 0;
+    //lightIntensity = t < 0.5 ? 1 : 0;
 }
