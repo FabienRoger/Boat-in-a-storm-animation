@@ -4,6 +4,7 @@
 
 #include "cgp/cgp.hpp"
 #include "terrain.hpp"
+#include "stormEnvironment.hpp"
 
 using namespace std;
 using namespace cgp;
@@ -11,9 +12,9 @@ using namespace cgp;
 class Boat {
    public:
     // Boat position parameters
-    float heightAboveWater = 0;
+    float heightAboveWater = 0.2;
     float kSpring = 0.1;
-    float dt = 1;
+    float dt = 0.5;
     float friction = 0.1;
     float g = 0.03;
 
@@ -44,7 +45,7 @@ class Boat {
     cgp::timer_basic timer;
     cgp::mesh_drawable boat_mesh;
     void initialize();
-    void draw(cgp::scene_environment_basic_camera_spherical_coords& env);
+    void draw(StormEnvironment& env);
     void update(Terrain& terrain);
     void update_sail(const vec3& position, const mat3& rotation);
     void generateStartSail(const vec3& position, const mat3& rotation);

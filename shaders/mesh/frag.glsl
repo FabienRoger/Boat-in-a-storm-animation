@@ -19,7 +19,8 @@ uniform sampler2D image_texture;
 
 // Uniform values - must be send from the C++ code
 uniform vec3 light; // position of the light
-uniform float lightIntensity; // position of the light
+uniform vec3 lightDirection; // direction of the light
+uniform float lightIntensity; // lightning intensity
 uniform vec3 lightningDirection; // direction of the lightning
 
 // Shape color
@@ -74,6 +75,11 @@ void main()
 	// Diffuse coefficient
 	float diffuse = max(dot(N,L),0.0);
 
+	// In the light cone coefficient
+	float d = dot(lightDirection, -L);
+	float inCone = d > 0 ? 4*d*d : 0;
+	float lightPower = max(inCone, 0.4);
+
 	// Specular coefficient
 	float specular = 0.0;
 	if(diffuse>0.0){
@@ -81,6 +87,9 @@ void main()
 		vec3 V = normalize(camera_position-fragment.position);
 		specular = pow( max(dot(R,V),0.0), specular_exp );
 	}
+
+	diffuse *= lightPower;
+	specular *= lightPower;
 
 	// Texture
 	// ************************* //

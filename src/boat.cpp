@@ -6,6 +6,7 @@
 
 #include "cgp/cgp.hpp"
 #include "utils.hpp"
+#include "stormEnvironment.hpp"
 
 using namespace cgp;
 using namespace std;
@@ -28,7 +29,8 @@ void Boat::initialize() {
     floatersSpeed.resize(nbFloaters, vec3(0, 0, 0));
 }
 
-void Boat::draw(cgp::scene_environment_basic_camera_spherical_coords& env) {
+void Boat::draw(StormEnvironment& env) {
+
     vec3 position = floatersPosition[boatFloater];
     boat_mesh.transform.translation = {position.x, position.y, position.z};
 
@@ -37,10 +39,16 @@ void Boat::draw(cgp::scene_environment_basic_camera_spherical_coords& env) {
     mat3 rotation = getRotation(vec3(1, 0, 0), vec3(0, 1, 0), delta1, delta2);
     boat_mesh.transform.rotation = rotation_transform::from_matrix(rotation);
 
+    update_sail(position, rotation);
+
+    env.light = sailPositions[nbVertical - 1][0];
+    env.lightDirection = rotation * vec3(1, 0, 0);
+
     cgp::draw(boat_mesh, env);
     cgp::draw(sail_mesh_drawable, env);
 
-    update_sail(position, rotation);
+
+
 }
 
 void Boat::update(Terrain& terrain) {
