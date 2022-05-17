@@ -19,7 +19,7 @@ void Boat::initialize() {
     vec3 position = floatersPosition[boatFloater];
     vec3 delta1 = floatersPosition[3] - floatersPosition[1];
     vec3 delta2 = floatersPosition[2] - floatersPosition[1];
-    mat3 rotation = getRotation(vec3(1, 0, 0), vec3(0, 1, 0), delta1, delta2);
+    mat3 rotation = getRotation(delta1Base, delta2Base, delta1, delta2);
     generateStartSail(position, rotation);
 
     sail_mesh_drawable.initialize(sail_mesh, "sail");
@@ -27,6 +27,8 @@ void Boat::initialize() {
     sail_mesh_drawable.shading.phong.specular = 0.3f;
 
     floatersSpeed.resize(nbFloaters, vec3(0, 0, 0));
+
+    windTimer.start();
 }
 
 void Boat::draw(StormEnvironment& env) {
@@ -36,7 +38,7 @@ void Boat::draw(StormEnvironment& env) {
 
     vec3 delta1 = floatersPosition[3] - floatersPosition[1];
     vec3 delta2 = floatersPosition[2] - floatersPosition[1];
-    mat3 rotation = getRotation(vec3(1, 0, 0), vec3(0, 1, 0), delta1, delta2);
+    mat3 rotation = getRotation(delta1Base, delta2Base, delta1, delta2);
     boat_mesh.transform.rotation = rotation_transform::from_matrix(rotation);
 
     update_sail(position, rotation);
@@ -87,7 +89,7 @@ void Boat::generateStartSail(const vec3& position, const mat3& rotation) {
         }
     }
 
-    // Cr�ation des triangles:
+    // Création des triangles:
     point = -1;
     for (int i = 0; i < nbVertical; i++) {
         for (int j = 0; j < nbHorizontal - i; j++) {
@@ -127,6 +129,11 @@ void Boat::generateStartSail(const vec3& position, const mat3& rotation) {
 }
 
 void Boat::update_sail(const vec3& position, const mat3& rotation) {
+    // Update wind
+    windTimer.update();
+    wind = wind0 + wind1 * sin(2 * PI * windTimer.t / windPeriod1) + wind2 * sin(2 * PI * windTimer.t / windPeriod2);
+
+    // Update sail nodes
     for (int i = 0; i < nbVertical; i++) {
         for (int j = 0; j < nbHorizontal - i; j++) {
             sailSpeeds[i][j] += wind;
@@ -170,10 +177,12 @@ void Boat::update_sail(const vec3& position, const mat3& rotation) {
         }
     }
 
+    // Fix end points
     sailPositions[0][0] = rotation * sailLowPos + position;
     sailPositions[nbVertical - 1][0] = rotation * (sailHighPos + sailLowPos) + position;
     sailPositions[0][nbHorizontal - 1] = rotation * (sailEndPos + sailLowPos) + position;
 
+    // Update display of sail
     int point = 0;
     for (int i = 0; i < nbVertical; i++) {
         for (int j = 0; j < nbHorizontal - i; j++) {

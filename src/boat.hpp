@@ -22,6 +22,9 @@ class Boat {
     vector<vec3> floatersPosition = {
         vec3(0,0,0), vec3(1,0,0), vec3(-1,0,0), vec3(0,sqrt(3),0)
     };
+    vec3 delta1Base = vec3(0, sqrt(3), 0) - vec3(1, 0, 0);
+    vec3 delta2Base = vec3(-1, 0, 0) - vec3(1, 0, 0);
+
     vector<vec3> floatersSpeed;
 
     int boatFloater = 0;
@@ -29,7 +32,15 @@ class Boat {
     // Sait parameters
     int nbVertical = 10;
     int nbHorizontal = 10;
-    vec3 wind = vec3(0, 0.05, 0);
+
+    cgp::timer_basic windTimer;
+    vec3 wind0 = vec3(0, 0.05, 0);
+    vec3 wind1 = vec3(0.01, 0.03, 0);
+    vec3 wind2 = vec3(-0.01, 0.02, 0);
+    float windPeriod1 = 10;
+    float windPeriod2 = 11;
+    vec3 wind;
+
     float sailFriction = 0.2;
     float kSailSpring = 1.3;
 
