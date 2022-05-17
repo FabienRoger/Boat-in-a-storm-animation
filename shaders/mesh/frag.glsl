@@ -33,8 +33,8 @@ uniform float specular_exp; // Specular exponent
 
 uniform mat4 view;       // View matrix (rigid transform) of the camera - to compute the camera position
 
-const float minFogDist = 3;
-const float maxDist = 100;
+const float minFogDist = 10;
+const float maxDist = 40;
 const vec3 backgroundColor = vec3(0.2,0.2,0.2);
 const vec3 white = vec3(1,1,1);
 const float PI = 3.1415926535;
