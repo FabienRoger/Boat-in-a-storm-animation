@@ -16,6 +16,7 @@ void opengl_uniform(GLuint shader, StormEnvironment const& environment) {
     opengl_uniform(shader, "light", environment.light, false);
     opengl_uniform(shader, "lightIntensity", environment.lightIntensity);
     opengl_uniform(shader, "lightningDirection", environment.lightningDirection);
+    opengl_uniform(shader, "lightDirection", environment.lightDirection);
 }
 
 vec3 StormEnvironment::actualBackgroundColor() {
