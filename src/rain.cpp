@@ -22,7 +22,7 @@ void Rain::initialize() {
 	rainOffset.resize(nbRain);
 	for (int i = 0; i < nbRain; i++)
 	{
-		positions[i] = 20 * (1 + random()) * vec3(randUnitVec2(),0);
+		positions[i] = 20 * (0.5 + random()) * vec3(randUnitVec2(),0);
 		rainOffset[i] = random();
 	}
 
