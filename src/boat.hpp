@@ -20,10 +20,10 @@ class Boat {
 
     int nbFloaters = 4;
     vector<vec3> floatersPosition = {
-        vec3(0,0,0), vec3(1,0,0), vec3(-1,0,0), vec3(0,sqrt(3),0)
+        vec3(0,0,0), vec3(2,0,0), vec3(-2,0,0), vec3(0,2*sqrt(3),0)
     };
-    vec3 delta1Base = vec3(0, sqrt(3), 0) - vec3(1, 0, 0);
-    vec3 delta2Base = vec3(-1, 0, 0) - vec3(1, 0, 0);
+    vec3 delta1Base = vec3(1, 0, 0);//vec3(0, sqrt(3), 0) - vec3(1, 0, 0);
+    vec3 delta2Base = vec3(0, 1, 0);//vec3(-1, 0, 0) - vec3(1, 0, 0);
 
     vector<vec3> floatersSpeed;
 

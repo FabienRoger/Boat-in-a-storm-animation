@@ -51,6 +51,8 @@ float getFog(float distanceToCam){
 
 void main()
 {
+	vec3 fragment_position = fragment.position;
+	vec3 fragment_normal = fragment.normal;
 
 	// Compute the position of the center of the camera
 	mat3 O = transpose(mat3(view));                   // get the orientation matrix
@@ -58,7 +60,7 @@ void main()
 	vec3 camera_position = -O*last_col;
 
 	// Re-normalize the normals (interpolated on the triangle)
-	vec3 N = normalize(fragment.normal);
+	vec3 N = normalize(fragment_normal);
 
 	// Inverse the normal if it is viewed from its back
 	//  (note: doesn't work on Mac)
@@ -70,7 +72,7 @@ void main()
 	// ************************* //
 
 	// Unit direction toward the light
-	vec3 L = normalize(light-fragment.position);
+	vec3 L = normalize(light-fragment_position);
 
 	// Diffuse coefficient
 	float diffuse = max(dot(N,L),0.0);
@@ -84,7 +86,7 @@ void main()
 	float specular = 0.0;
 	if(diffuse>0.0){
 		vec3 R = reflect(-L,N); // symetric of light-direction with respect to the normal
-		vec3 V = normalize(camera_position-fragment.position);
+		vec3 V = normalize(camera_position-fragment_position);
 		specular = pow( max(dot(R,V),0.0), specular_exp );
 	}
 
