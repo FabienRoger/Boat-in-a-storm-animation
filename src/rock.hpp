@@ -12,7 +12,10 @@ public:
 	mesh rockMesh;
 	mesh_drawable rockMeshDrawable;
 
+	Rock();
+	Rock(vec3 position, float radius);
 	void initialize();
 	void draw(StormEnvironment const& environment);
-	void improveDetails();
+	void cut();
+	void addPerlinNoise(float amplitude);
 };

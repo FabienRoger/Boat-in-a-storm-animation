@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "terrain.hpp"
+#include "utils.hpp"
 
 using namespace cgp;
 
@@ -19,7 +20,13 @@ void scene_structure::initialize()
     terrain.initialize();
     rain.initialize();
     boat.initialize();
-    rock.initialize();
+
+    rocks.resize(10);
+    for (auto& rock : rocks) {
+        rock.position = vec3(-5, 0, 2) + 10*randVec3();
+        rock.initialize();
+    }
+        
 }
 
 void scene_structure::display() {
@@ -31,7 +38,9 @@ void scene_structure::display() {
 
     boat.update(terrain);
     boat.draw(environment);
-    //rock.draw(environment);
+
+    for (auto& rock : rocks)
+        rock.draw(environment);
 
     display_semiTransparent();
 }

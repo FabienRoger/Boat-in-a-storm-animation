@@ -32,7 +32,7 @@ struct scene_structure {
 	Terrain terrain;
 	Rain rain;
 	Boat boat;
-	Rock rock;
+	std::vector<Rock> rocks;
 
 
 	// ****************************** //
