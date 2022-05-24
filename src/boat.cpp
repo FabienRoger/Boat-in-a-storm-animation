@@ -11,14 +11,15 @@ using namespace std;
 
 void Boat::initialize()
 {
-	mesh boatMesh = mesh_load_file_obj("assets/low_poly_boat.obj");
+	mesh boatMesh = mesh_load_file_obj("assets/boat.obj");
 	boat_mesh.initialize(boatMesh, "boat mesh");
+	boat_mesh.texture = opengl_load_texture_image("assets/boat.jpg");
 	boat_mesh.transform.scaling = .08f;
 
 	generateStartSail();
 	sail_mesh_drawable.initialize(sail_mesh, "sail");
-	sail_mesh_drawable.shading.color = { 1.0f,1.0f,1.0f };
-	sail_mesh_drawable.shading.phong.specular = 0.3f;
+	
+	//sail_mesh_drawable.shading.phong.specular = 0.3f;
 }
 
 void Boat::draw(cgp::scene_environment_basic_camera_spherical_coords& env)
