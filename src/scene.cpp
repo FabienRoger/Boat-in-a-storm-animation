@@ -19,6 +19,7 @@ void scene_structure::initialize()
     terrain.initialize();
     rain.initialize();
     boat.initialize();
+    rock.initialize();
 }
 
 void scene_structure::display() {
@@ -30,6 +31,7 @@ void scene_structure::display() {
 
     boat.update(terrain);
     boat.draw(environment);
+    //rock.draw(environment);
 
     display_semiTransparent();
 }

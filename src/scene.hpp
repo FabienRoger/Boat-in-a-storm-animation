@@ -5,6 +5,7 @@
 #include "rain.hpp"
 #include "boat.hpp"
 #include "stormEnvironment.hpp"
+#include "rock.hpp"
 
 
 // The element of the GUI that are not already stored in other structures
@@ -31,6 +32,7 @@ struct scene_structure {
 	Terrain terrain;
 	Rain rain;
 	Boat boat;
+	Rock rock;
 
 
 	// ****************************** //

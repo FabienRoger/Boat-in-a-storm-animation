@@ -23,12 +23,7 @@ void Terrain::initialize() {
     mesh_drawable.initialize(terrain_mesh, "terrain");
     auto shader = opengl_load_shader("shaders/ocean/vert.glsl", "shaders/ocean/frag.glsl");
     mesh_drawable.shader = shader;
-    // mesh_drawable.shading.color = { 0.1f,0.1f,0.8f };//Couleur de l'eau
-    mesh_drawable.shading.phong.specular = 0.4f;  //� d�finir pour l'eau
-    // GLuint const texture_image_id = opengl_load_texture_image("assets/water_texture.jpg",
-    // GL_REPEAT,
-    // GL_REPEAT);
-    // mesh_drawable.texture = texture_image_id;
+    mesh_drawable.shading.phong.specular = 0.8f;
     mesh_drawable.shading.color = {0.1f, 0.1f, 0.9f};
 }
 
