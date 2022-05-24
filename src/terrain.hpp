@@ -2,10 +2,12 @@
 
 #include "cgp/cgp.hpp"
 
+#include "stormEnvironment.hpp"
+
 
 class Terrain {
 public:
-	using environmentType = cgp::scene_environment_basic_camera_spherical_coords;
+	using environmentType = StormEnvironment;
 	cgp::mesh_drawable mesh_drawable;
 	cgp::mesh terrain_mesh;
 	int N_terrain_samples = 80;

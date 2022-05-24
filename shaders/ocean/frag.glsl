@@ -72,7 +72,7 @@ void main()
 	float diffuse = max(dot(N,L),0.0);
 
 	// In the light cone coefficient
-	float d = dot(lightDirection, -L);
+	float d = dot(lightDirection, -L) + 0.2;
 	float inCone = d > 0 ? 4*d*d : 0;
 	float lightPower = max(inCone, 0.4);
 
