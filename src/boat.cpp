@@ -11,8 +11,9 @@
 using namespace cgp;
 
 void Boat::initialize() {
-    mesh boatMesh = mesh_load_file_obj("assets/low_poly_boat.obj");
+    mesh boatMesh = mesh_load_file_obj("assets/boat.obj");
     boat_mesh.initialize(boatMesh, "boat mesh");
+    boat_mesh.texture = opengl_load_texture_image("assets/boat.jpg");
     boat_mesh.transform.scaling = .08f;
 
     vec3 position = floatersPosition[boatFloater];
