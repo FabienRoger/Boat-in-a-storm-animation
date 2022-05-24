@@ -4,7 +4,6 @@
 
 #include "cgp/cgp.hpp"
 
-using namespace std;
 using namespace cgp;
 
 class StormEnvironment : public scene_environment_basic_camera_spherical_coords {

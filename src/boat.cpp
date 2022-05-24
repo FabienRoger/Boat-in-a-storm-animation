@@ -5,11 +5,10 @@
 #include <vector>
 
 #include "cgp/cgp.hpp"
-#include "utils.hpp"
 #include "stormEnvironment.hpp"
+#include "utils.hpp"
 
 using namespace cgp;
-using namespace std;
 
 void Boat::initialize() {
     mesh boatMesh = mesh_load_file_obj("assets/low_poly_boat.obj");
@@ -32,7 +31,6 @@ void Boat::initialize() {
 }
 
 void Boat::draw(StormEnvironment& env) {
-
     vec3 position = floatersPosition[boatFloater];
     boat_mesh.transform.translation = {position.x, position.y, position.z};
 
@@ -48,9 +46,6 @@ void Boat::draw(StormEnvironment& env) {
 
     cgp::draw(boat_mesh, env);
     cgp::draw(sail_mesh_drawable, env);
-
-
-
 }
 
 void Boat::update(Terrain& terrain) {
@@ -68,8 +63,8 @@ void Boat::generateStartSail(const vec3& position, const mat3& rotation) {
     sailPositions.resize(nbVertical);
     sailSpeeds.resize(nbVertical);
     for (int i = 0; i < nbVertical; i++) {
-        sailPositions[i] = vector<vec3>(nbHorizontal - i);  // Triangular sail
-        sailSpeeds[i] = vector<vec3>(nbHorizontal - i);
+        sailPositions[i] = std::vector<vec3>(nbHorizontal - i);  // Triangular sail
+        sailSpeeds[i] = std::vector<vec3>(nbHorizontal - i);
         for (int j = 0; j < nbHorizontal - i; j++) {
             vec3 verticalPos = i * sailHighPos / (nbVertical - 1);
             vec3 horizontalPos = j * sailEndPos / (nbHorizontal - 1);

@@ -3,10 +3,9 @@
 #include <vector>
 
 #include "cgp/cgp.hpp"
-#include "terrain.hpp"
 #include "stormEnvironment.hpp"
+#include "terrain.hpp"
 
-using namespace std;
 using namespace cgp;
 
 class Boat {
@@ -19,13 +18,12 @@ class Boat {
     float g = 0.03;
 
     int nbFloaters = 4;
-    vector<vec3> floatersPosition = {
-        vec3(0,0,0), vec3(2,0,0), vec3(-2,0,0), vec3(0,2*sqrt(3),0)
-    };
-    vec3 delta1Base = vec3(1, 0, 0);//vec3(0, sqrt(3), 0) - vec3(1, 0, 0);
-    vec3 delta2Base = vec3(0, 1, 0);//vec3(-1, 0, 0) - vec3(1, 0, 0);
+    std::vector<vec3> floatersPosition = {
+        vec3(0, 0, 0), vec3(2, 0, 0), vec3(-2, 0, 0), vec3(0, 2 * sqrt(3), 0)};
+    vec3 delta1Base = vec3(1, 0, 0);  // vec3(0, sqrt(3), 0) - vec3(1, 0, 0);
+    vec3 delta2Base = vec3(0, 1, 0);  // vec3(-1, 0, 0) - vec3(1, 0, 0);
 
-    vector<vec3> floatersSpeed;
+    std::vector<vec3> floatersSpeed;
 
     int boatFloater = 0;
 
@@ -48,8 +46,8 @@ class Boat {
     vec3 sailHighPos = vec3(1.0f, 0.0f, 2.7f);  // relative to low pos
     vec3 sailEndPos = vec3(-3.0f, 0.0f, 0.5f);  // relative to low pos
 
-    vector<vector<vec3>> sailPositions;
-    vector<vector<vec3>> sailSpeeds;
+    std::vector<std::vector<vec3>> sailPositions;
+    std::vector<std::vector<vec3>> sailSpeeds;
     cgp::mesh_drawable sail_mesh_drawable;
     cgp::mesh sail_mesh;
 

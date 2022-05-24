@@ -8,7 +8,6 @@
 #include "utils.hpp"
 
 using namespace cgp;
-using namespace std;
 
 void opengl_uniform(GLuint shader, StormEnvironment const& environment) {
     opengl_uniform(shader, "projection", environment.projection.matrix());
@@ -27,5 +26,5 @@ void StormEnvironment::update() {
     timer.update();
     float t = std::fmod(timer.t, 10);
     lightIntensity = t < 0.2 ? (1 - 5 * t) : 0;
-    //lightIntensity = t < 0.5 ? 1 : 0;
+    // lightIntensity = t < 0.5 ? 1 : 0;
 }
