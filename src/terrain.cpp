@@ -38,8 +38,9 @@ float Terrain::evaluate_terrain_height(float x, float y, float t) {
     float omega = 0.1f;
     float A = 0.2f;
     float B = 1.0f;
+    float X = -0.5 * x - 0.5 * y;
 
-    float z = h_0 - h_0 * std::max(std::abs(std::cos(x * omega + A * t)), 0.05f) + B * noise_perlin({0.3 * x, 0.3 * y, 0.5 * t}, 3, 0.02f, 5.0f);  // x octave persistency, frequency gain
+    float z = h_0 - h_0 * std::max(std::abs(std::cos(X * omega + A * t)), 0.05f) + B * noise_perlin({0.3 * x, 0.3 * y, 0.5 * t}, 3, 0.02f, 5.0f);  // x octave persistency, frequency gain
     return z;
 }
 
