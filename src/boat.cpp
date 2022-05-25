@@ -27,6 +27,8 @@ void Boat::initialize() {
     floatersSpeed.resize(nbFloaters, vec3(0, 0, 0));
 
     windTimer.start();
+
+    floaterSphere.initialize(mesh_primitive_sphere(1), "floater");
 }
 
 void Boat::draw(StormEnvironment& env) {
@@ -42,11 +44,19 @@ void Boat::draw(StormEnvironment& env) {
 
     cgp::draw(boat_mesh, env);
     cgp::draw(sail_mesh_drawable, env);
+
+    // Display floaters for debug
+    /*floaterSphere.transform.translation = floatersPosition[2];
+    cgp::draw(floaterSphere, env);
+    floaterSphere.transform.translation = floatersPosition[1];
+    cgp::draw(floaterSphere, env);
+    floaterSphere.transform.translation = floatersPosition[3];
+    cgp::draw(floaterSphere, env);*/
 }
 
 void Boat::update(Terrain& terrain) {
     for (int i = 0; i < nbFloaters; i++) {
-        float desiredZ = heightAboveWater + terrain.evaluate_terrain_height(floatersPosition[i].x, floatersPosition[i].y, terrain.timer.t);
+        float desiredZ = heightAboveWater + terrain.evaluate_terrain_height(floatersPosition[i].x, floatersPosition[i].y, terrain.timer.t, boatFakePos);
         floatersSpeed[i] += vec3(0, 0, std::max((desiredZ - floatersPosition[i].z) * kSpring, 0.f));
         floatersSpeed[i] += vec3(0, 0, -g);
         floatersSpeed[i] *= 1 - friction;
@@ -190,7 +200,35 @@ void Boat::update_sail(const vec3& position, const mat3& rotation) {
 
 mat3 Boat::getBoatRotation() {
     vec3 position = floatersPosition[boatFloater];
-    vec3 delta1 = floatersPosition[3] - floatersPosition[1];
-    vec3 delta2 = floatersPosition[2] - floatersPosition[1];
-    return getRotation(delta1Base, delta2Base, delta1, delta2);
+    vec3 delta1 = floatersPosition[2] - floatersPosition[1];
+    vec3 delta2 = floatersPosition[3] - floatersPosition[1];
+    return getRotation(delta1, delta2, delta1Base, delta2Base);
+}
+
+void Boat::move(inputs_interaction_parameters inputs) {
+    inputs_keyboard_parameters& keyboard = inputs.keyboard;
+    float rotationSpeed = 0.3; //0.03;
+    float acceleration = 1.1;
+    if (keyboard.up)
+        boatFakeSpeed *= acceleration;
+    if (keyboard.down)
+        boatFakeSpeed /= acceleration;
+    if (keyboard.right)
+        rotateFloaters(rotationSpeed);
+    if (keyboard.left)
+        rotateFloaters(-rotationSpeed);
+
+    boatFakePos += getFakeSpeed();
+}
+
+vec3 Boat::getFakeSpeed() {
+    vec3 boatDirection = getBoatRotation() * vec3(1, 0, 0);
+    return boatFakeSpeed * vec3(boatDirection.xy(), 0);
+}
+
+void Boat::rotateFloaters(float angle) {
+    auto rotation = rotation_transform::from_axis_angle(vec3(0, 0, 1), angle);
+    for (int i = 0; i < nbFloaters; i++) {
+        floatersPosition[i] = rotation * floatersPosition[i];
+    }
 }

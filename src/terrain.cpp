@@ -27,26 +27,29 @@ void Terrain::initialize() {
     mesh_drawable.shading.color = {0.1f, 0.1f, 0.9f};
 }
 
-float Terrain::evaluate_terrain_height(float x, float y, float t) {
-    // Calcule la hauteur d'un point de coordonn�e xy au temps t
+float Terrain::evaluate_terrain_height(float x, float y, float t, vec3& fakePos) {
+    // Calcule la hauteur d'un point de coordonn�e xy au temps t, avec un décalage de fakePos (fausse position du bateau);
     float h_0 = 5.0f;
     float omega = 0.1f;
     float A = 0.2f;
     float B = 1.0f;
+
+    x += fakePos.x;
+    y += fakePos.y;
     float X = -0.5 * x - 0.5 * y;
 
     float z = h_0 - h_0 * std::max(std::abs(std::cos(X * omega + A * t)), 0.05f) + B * noise_perlin({0.3 * x, 0.3 * y, 0.5 * t}, 3, 0.02f, 5.0f);  // x octave persistency, frequency gain
     return z;
 }
 
-void Terrain::displayTerrain(environmentType const& environment) {
+void Terrain::displayTerrain(environmentType const& environment, vec3& fakePos) {
     timer.update();
-    update_terrain_mesh(timer.t);
+    update_terrain_mesh(timer.t, fakePos);
     draw(mesh_drawable, environment);  // fonction qui consomme � mort la ressource
     // draw_wireframe(mesh_drawable, environment);
 }
 
-void Terrain::update_terrain_mesh(float t) {
+void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
     // Modifie terrain_mesh en fonction du temps et applique ce nouveau mesh au drawable
     int N = N_terrain_samples;
     for (int ku = 0; ku < N; ++ku) {
@@ -57,7 +60,7 @@ void Terrain::update_terrain_mesh(float t) {
             // float x = (ku / (N - 1.0f) - 0.5f) * terrain_length;
             // float y = (kv / (N - 1.0f) - 0.5f) * terrain_length;
 
-            float z = evaluate_terrain_height(x, y, t);  // PI
+            float z = evaluate_terrain_height(x, y, t, fakePos);  // PI
 
             terrain_mesh.position[k].z = z;
         }

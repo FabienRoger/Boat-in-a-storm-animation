@@ -14,7 +14,7 @@ public:
 
 	Rock();
 	Rock(vec3 position, float radius);
-	void initialize();
+	void initialize(GLuint shader);
 	void draw(StormEnvironment const& environment);
 	void cut(float cutLevel);
 	void addPerlinNoise(float amplitude);

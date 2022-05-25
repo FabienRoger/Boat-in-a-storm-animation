@@ -21,11 +21,10 @@ Rock::Rock(){}
 
 Rock::Rock(vec3 p, float r): position(p), radius(r){}
 
-void Rock::initialize() {
+void Rock::initialize(GLuint shader) {
     // Fonction d'initialisation
     rockMesh = mesh_primitive_sphere(radius);
     rockMeshDrawable.initialize(rockMesh, "rock");
-    auto shader = opengl_load_shader("shaders/ocean/vert.glsl", "shaders/ocean/frag.glsl");
     rockMeshDrawable.shader = shader;
     rockMeshDrawable.shading.phong.specular = 0.2f;
     rockMeshDrawable.shading.color = {0.5f, 0.5f, 0.5f};
