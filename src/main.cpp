@@ -46,9 +46,6 @@ int main(int, char* argv[]) {
         helper_common.frame_begin(scene.environment.actualBackgroundColor(), window, scene.inputs.window, scene.inputs.mouse.on_gui);
         scene.environment.projection.update_aspect_ratio(scene.inputs.window.aspect_ratio());
 
-        // Display the ImGUI interface (button, sliders, etc)
-        // scene.display_gui();
-
         // Call the display of the scene
         scene.display();
 
@@ -105,6 +102,8 @@ GLFWwindow* standard_window_initialization(int width_target, int height_target) 
 
     // Initialize ImGUI
     cgp::imgui_init(window);
+    ImGui_ImplGlfw_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
 
     // Set the callback functions for the inputs
     glfwSetKeyCallback(window, keyboard_callback);             // Event called when a keyboard touch is pressed/released

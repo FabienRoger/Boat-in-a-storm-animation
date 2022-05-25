@@ -62,18 +62,13 @@ void scene_structure::display_semiTransparent() {
     glDisable(GL_BLEND);
 }
 
-void scene_structure::display_gui() {
-    ImGui::Checkbox("Frame", &gui.display_frame);
-    ImGui::Checkbox("Wireframe", &gui.display_wireframe);
-}
-
 void scene_structure::addRockGroup(float minDistance) {
-    int groupSize = 2 + std::floor(random() * 5);  // Random number in [2,6]
+    int groupSize = 4 + std::floor(random() * 5);  // Random number in [4,8]
     float groupDist = minDistance + random() * (rocksMaxDist - minDistance);
     vec3 groupPos = groupDist * vec3(randUnitVec2(), 0);
     float spread = 3;
     for (int i = 0; i < groupSize; i++) {
-        float radius = random() * 3;
+        float radius = random() * 2;
         Rock newRock(vec3(groupPos) + randVec3() * spread, radius);
         newRock.initialize(rockShader);
         rocks.push_back(newRock);

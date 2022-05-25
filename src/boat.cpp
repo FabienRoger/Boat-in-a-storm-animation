@@ -214,9 +214,9 @@ void Boat::move(inputs_interaction_parameters inputs) {
     if (keyboard.down)
         boatFakeSpeed /= acceleration;
     if (keyboard.right)
-        rotateFloaters(rotationSpeed);
-    if (keyboard.left)
         rotateFloaters(-rotationSpeed);
+    if (keyboard.left)
+        rotateFloaters(rotationSpeed);
 
     boatFakePos += getFakeSpeed();
 }
