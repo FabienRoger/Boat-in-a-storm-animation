@@ -1,14 +1,4 @@
-// Nathan - PI = pas d'impact significatif sur les performances
-// Gros pb de perf: pour avoir un oc�an pas trop d�gueu il faut 200 samples mais fps vers 30
-
-// Passer par un shader ? tester https://github.com/drohmer/CGP/tree/main/scenes/examples/03_shader_effects/01_shader_deformation
-//  et si plus �fficace, impl�menter
-
-// Beaucoup de triangles quand m�me
-// si on se sert de la forme juste pour la houle, on peut, � l'aide de la d�riv�e, choisir de d�tailler certains carr�s plus que
-// d'autres. Il faut que le nombre de triangle reste constant (par ex 10 000 triangles de base et on en coupe en deux 2000.
-
-// autre id�e (compatible mais �a devient hardcore) c'est de prendre une surface au nombre de triangles constant mais la plaquer sous la camera en temps r�el.
+// Display the ocean
 
 #include "terrain.hpp"
 
@@ -18,7 +8,7 @@
 using namespace cgp;
 
 void Terrain::initialize() {
-    // Fonction d'initialisation
+    // Initialization
     create_empty_terrain();
     mesh_drawable.initialize(terrain_mesh, "terrain");
     auto shader = opengl_load_shader("shaders/ocean/vert.glsl", "shaders/ocean/frag.glsl");
@@ -45,8 +35,7 @@ float Terrain::evaluate_terrain_height(float x, float y, float t, vec3& fakePos)
 void Terrain::displayTerrain(environmentType const& environment, vec3& fakePos) {
     timer.update();
     update_terrain_mesh(timer.t, fakePos);
-    draw(mesh_drawable, environment);  // fonction qui consomme � mort la ressource
-    // draw_wireframe(mesh_drawable, environment);
+    draw(mesh_drawable, environment);  // fonction qui consomme la ressource
 }
 
 void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
@@ -57,23 +46,21 @@ void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
             int k = kv + N * ku;
             float x = terrain_mesh.position[k].x;
             float y = terrain_mesh.position[k].y;
-            // float x = (ku / (N - 1.0f) - 0.5f) * terrain_length;
-            // float y = (kv / (N - 1.0f) - 0.5f) * terrain_length;
 
-            float z = evaluate_terrain_height(x, y, t, fakePos);  // PI
+            float z = evaluate_terrain_height(x, y, t, fakePos);  
 
             terrain_mesh.position[k].z = z;
         }
     }
-    terrain_mesh.compute_normal();                         // Ne pas oublier les normales du mesh �voluent - PI
-    mesh_drawable.update_position(terrain_mesh.position);  // Mise � jour des positions - PI
-    mesh_drawable.update_normal(terrain_mesh.normal);      // et des normales. - PI
-    // mesh_drawable.update_color(terrain_mesh.color);
+    terrain_mesh.compute_normal();                         // Ne pas oublier les normales du mesh evoluent 
+    mesh_drawable.update_position(terrain_mesh.position);  // Mise a jour des positions 
+    mesh_drawable.update_normal(terrain_mesh.normal);      // et des normales. 
 }
 
 void Terrain::create_empty_terrain() {
-    // Cr�e un mesh de taille N*N en initialisant les points � une hauteur de 0;
+    // Cree un mesh de taille N*N en initialisant les points a une hauteur de 0;
     // Passer par mesh_primitive_grid consomme un petit plus de ressource lors de l'update
+
     int N = N_terrain_samples;
     terrain_mesh.position.resize(N * N);
     terrain_mesh.uv.resize(N * N);
@@ -91,7 +78,7 @@ void Terrain::create_empty_terrain() {
         }
     }
 
-    // Cr�ation des triangles:
+    // Creation des triangles:
     for (int ku = 0; ku < N - 1; ++ku) {
         for (int kv = 0; kv < N - 1; ++kv) {
             unsigned int idx = kv + N * ku;
