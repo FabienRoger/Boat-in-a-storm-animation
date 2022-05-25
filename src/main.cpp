@@ -1,14 +1,11 @@
+// Nathan GASC et Fabien ROGER - Ecole Polytechnique - INF443
+
+#include <mmsystem.h>  //For background music
 
 #include <iostream>
 
-#include "cgp/cgp.hpp"  // Give access to the complete CGP library
-
-// Custom scene of this code
+#include "cgp/cgp.hpp"  //3D library
 #include "scene.hpp"
-
-// *************************** //
-// Global Variables
-// *************************** //
 
 // A helper tool to factorize common default functions (Window initialization, code that starts frame, etc)
 cgp::helper_common_scene helper_common;
@@ -16,31 +13,16 @@ cgp::helper_common_scene helper_common;
 // The custom structure of the current scene defined in "scene.hpp"
 scene_structure scene;
 
-// *************************** //
-// Start of the program
-// *************************** //
-
 GLFWwindow* standard_window_initialization(int width = 0, int height = 0);
 
 int main(int, char* argv[]) {
-    std::cout << "Run " << argv[0] << std::endl;
-
-    // ************************ //
-    //     INITIALISATION
-    // ************************ //
-
     // Standard Initialization with dimension in pixels
     GLFWwindow* window = standard_window_initialization();
 
-    // Custom scene initialization
-    std::cout << "Initialize data of the scene ..." << std::endl;
     scene.initialize();
-    std::cout << "Initialization success" << std::endl;
 
-    // ************************ //
-    //     Animation Loop
-    // ************************ //
-    std::cout << "Start animation loop ..." << std::endl;
+    PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // plays music
+
     while (!glfwWindowShouldClose(window)) {
         // Reset the screen for a new frame
         helper_common.frame_begin(scene.environment.actualBackgroundColor(), window, scene.inputs.window, scene.inputs.mouse.on_gui);
@@ -54,7 +36,7 @@ int main(int, char* argv[]) {
     }
 
     // Cleanup
-    // cgp::imgui_cleanup();
+    cgp::imgui_cleanup();
     glfwDestroyWindow(window);
     glfwTerminate();
 
@@ -102,6 +84,7 @@ GLFWwindow* standard_window_initialization(int width_target, int height_target) 
 
     // Initialize ImGUI
     cgp::imgui_init(window);
+    // Remove as much IMGUI as possible
     ImGui_ImplGlfw_Shutdown();
     ImGui_ImplOpenGL3_Shutdown();
 
