@@ -32,12 +32,16 @@ void Rock::initialize() {
     rockMeshDrawable.transform.translation = position;
 
     addPerlinNoise(0.5);
-    cut();
+    cut(0);
     addPerlinNoise(0.2);
+    cut(0.2);
+
+    rockMesh.compute_normal();                         // Ne pas oublier les normales du mesh évoluent - PI
+    rockMeshDrawable.update_position(rockMesh.position);  // Mise à jour des positions - PI
+    rockMeshDrawable.update_normal(rockMesh.normal);      // et des normales. - PI
 }
 
 void Rock::addPerlinNoise(float amplitude) {
-    // Modifie terrain_mesh en fonction du temps et applique ce nouveau mesh au drawable
     for (auto& position : rockMesh.position) {
         float x = position.x;
         float y = position.y;
@@ -46,30 +50,21 @@ void Rock::addPerlinNoise(float amplitude) {
         vec3 delta = amplitude * position * noise_perlin({ size * x, size * y, size * z }, 3, 0.02f, 5.0f);
         position += delta;
     }
-
-    rockMesh.compute_normal();                         // Ne pas oublier les normales du mesh évoluent - PI
-    rockMeshDrawable.update_position(rockMesh.position);  // Mise à jour des positions - PI
-    rockMeshDrawable.update_normal(rockMesh.normal);      // et des normales. - PI
 }
 
-void Rock::cut() {
+void Rock::cut(float cutLevel) {
     vec3 cutDirection = normalize(randVec3() - vec3(0.5,0.5,0.5));
-    float cutLevel = 0;
     for (auto& mposition : rockMesh.position) {
-        //vec3 deltap = mposition - position;
         float normDepth = dot(cutDirection, normalize(mposition));
-        //std::cout << mposition << " ; " << deltap << " ; " << (normDepth > cutLevel) << std::endl;
         if (normDepth > cutLevel) {
             float depth = dot(cutDirection, mposition);
             vec3 projected = depth * cutDirection;
             mposition -= projected;
         }
     }
-    rockMesh.compute_normal();                         // Ne pas oublier les normales du mesh évoluent - PI
-    rockMeshDrawable.update_position(rockMesh.position);  // Mise à jour des positions - PI
-    rockMeshDrawable.update_normal(rockMesh.normal);      // et des normales. - PI
 }
 
 void Rock::draw(StormEnvironment const& environment) {
+    rockMeshDrawable.transform.translation = position;
     cgp::draw(rockMeshDrawable, environment);
 }

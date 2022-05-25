@@ -32,6 +32,9 @@ struct scene_structure {
 	Terrain terrain;
 	Rain rain;
 	Boat boat;
+
+	int minRocks = 100;
+	float rocksMaxDist = 100;
 	std::vector<Rock> rocks;
 
 
@@ -43,6 +46,9 @@ struct scene_structure {
 	void display();     // The frame display to be called within the animation loop
 	void display_gui(); // The display of the GUI, also called within the animation loop
 	void display_semiTransparent();
+
+	void addRockGroup(float minDistance);
+	void updateRocks();
 
 };
 

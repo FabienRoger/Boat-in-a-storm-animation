@@ -49,3 +49,7 @@ vec3 makeOrthogonal(vec3 a1, vec3 a2) {
     vec3 projected = dot(a1, a2) * a1;
     return normalize(a2 - projected);
 }
+
+float magnitude(vec3& v) {
+    return std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}

@@ -17,9 +17,7 @@ void Boat::initialize() {
     boat_mesh.transform.scaling = .08f;
 
     vec3 position = floatersPosition[boatFloater];
-    vec3 delta1 = floatersPosition[3] - floatersPosition[1];
-    vec3 delta2 = floatersPosition[2] - floatersPosition[1];
-    mat3 rotation = getRotation(delta1Base, delta2Base, delta1, delta2);
+    mat3 rotation = getBoatRotation();
     generateStartSail(position, rotation);
 
     sail_mesh_drawable.initialize(sail_mesh, "sail");
@@ -34,10 +32,7 @@ void Boat::initialize() {
 void Boat::draw(StormEnvironment& env) {
     vec3 position = floatersPosition[boatFloater];
     boat_mesh.transform.translation = {position.x, position.y, position.z};
-
-    vec3 delta1 = floatersPosition[3] - floatersPosition[1];
-    vec3 delta2 = floatersPosition[2] - floatersPosition[1];
-    mat3 rotation = getRotation(delta1Base, delta2Base, delta1, delta2);
+    mat3 rotation = getBoatRotation();
     boat_mesh.transform.rotation = rotation_transform::from_matrix(rotation);
 
     update_sail(position, rotation);
@@ -191,4 +186,11 @@ void Boat::update_sail(const vec3& position, const mat3& rotation) {
     sail_mesh.compute_normal();                              // Ne pas oublier les normales du mesh évoluent - PI
     sail_mesh_drawable.update_position(sail_mesh.position);  // Mise à jour des positions - PI
     sail_mesh_drawable.update_normal(sail_mesh.normal);      // et des normales. - PI
+}
+
+mat3 Boat::getBoatRotation() {
+    vec3 position = floatersPosition[boatFloater];
+    vec3 delta1 = floatersPosition[3] - floatersPosition[1];
+    vec3 delta2 = floatersPosition[2] - floatersPosition[1];
+    return getRotation(delta1Base, delta2Base, delta1, delta2);
 }

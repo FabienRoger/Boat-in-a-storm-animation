@@ -58,4 +58,5 @@ class Boat {
     void update(Terrain& terrain);
     void update_sail(const vec3& position, const mat3& rotation);
     void generateStartSail(const vec3& position, const mat3& rotation);
+    mat3 getBoatRotation();
 };
