@@ -14,15 +14,18 @@ void Rain::initialize() {
 	float hsize = 2.0f;
 	mesh quad_mesh = mesh_primitive_quadrangle({ -hsize,0,0 }, { hsize,0,0 }, { hsize,0,2 * size }, { -hsize,0,2 * size });
 	mesh_drawable.initialize(quad_mesh);
+	auto shader = opengl_load_shader("shaders/rain/vert.glsl", "shaders/rain/frag.glsl");
 	// mesh_drawable.shading.color = { 0.6f,0.85f,0.5f };
 	// mesh_drawable.shading.phong = { 0.4f, 0.6f,0,1 };
 	mesh_drawable.texture = texture;
+	mesh_drawable.shader = shader;
 
 	positions.resize(nbRain);
 	rainOffset.resize(nbRain);
 	for (int i = 0; i < nbRain; i++)
 	{
-		positions[i] = 20 * (0.5 + random()) * vec3(randUnitVec2(),0);
+		//positions[i] = 20 * (0.5 + random()) * vec3(randUnitVec2(),0);
+		positions[i] = 20 * (0.1 + random()) * vec3(randUnitVec2(), 0);
 		rainOffset[i] = random();
 	}
 	

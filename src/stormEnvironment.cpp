@@ -8,7 +8,6 @@
 #include "utils.hpp"
 
 using namespace cgp;
-using namespace std;
 
 void opengl_uniform(GLuint shader, StormEnvironment const& environment) {
     opengl_uniform(shader, "projection", environment.projection.matrix());
@@ -25,7 +24,16 @@ vec3 StormEnvironment::actualBackgroundColor() {
 
 void StormEnvironment::update() {
     timer.update();
-    float t = std::fmod(timer.t, 10);
+    float t = timer.t;
+
+    if (t > timeToNextLight) {
+        lightUp();
+    }
+
     lightIntensity = t < 0.2 ? (1 - 5 * t) : 0;
-    //lightIntensity = t < 0.5 ? 1 : 0;
+}
+
+void StormEnvironment::lightUp() {
+    timer.t = 0;
+    timeToNextLight = random() * 5;
 }

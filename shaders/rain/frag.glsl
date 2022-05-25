@@ -2,11 +2,15 @@
 
 // Fragment shader - this code is executed for every pixel/fragment that belongs to a displayed shape
 
-// Inputs coming from the vertex shader
-flat in vec3 fragment_position; // position in the world space
-flat in vec3 fragment_normal;   // normal in the world space
-in vec3 fragment_color;    // current color on the fragment
-in vec2 fragment_uv;       // current uv-texture on the fragment
+// Inputs coming from tehe vertex shader
+in struct fragment_data
+{ 
+    vec3 position; // position in the world space
+    vec3 normal;   // normal in the world space
+    vec3 color;    // current color on the fragment
+    vec2 uv;       // current uv-texture on the fragment
+} fragment;
+
 // Output of the fragment shader - output color
 layout(location=0) out vec4 FragColor;
 
@@ -32,7 +36,7 @@ uniform float specular_exp; // Specular exponent
 uniform mat4 view;       // View matrix (rigid transform) of the camera - to compute the camera position
 
 const float minFogDist = 10;
-const float maxDist = 50;
+const float maxDist = 40;
 const vec3 backgroundColor = vec3(0.2,0.2,0.2);
 const vec3 white = vec3(1,1,1);
 const float PI = 3.1415926535;
@@ -47,6 +51,8 @@ float getFog(float distanceToCam){
 
 void main()
 {
+	vec3 fragment_position = fragment.position;
+	vec3 fragment_normal = fragment.normal;
 
 	// Compute the position of the center of the camera
 	mat3 O = transpose(mat3(view));                   // get the orientation matrix
@@ -72,7 +78,7 @@ void main()
 	float diffuse = max(dot(N,L),0.0);
 
 	// In the light cone coefficient
-	float d = dot(lightDirection, -L) + 0.2;
+	float d = dot(lightDirection, -L);
 	float inCone = d > 0 ? 4*d*d : 0;
 	float lightPower = max(inCone, 0.4);
 
@@ -92,7 +98,7 @@ void main()
 	
 	// Current uv coordinates
 	// by default inverse the v direction (avoids common image upside-down)
-	vec2 uv_image = vec2(fragment_uv.x, 1.0-fragment_uv.y);
+	vec2 uv_image = vec2(fragment.uv.x, 1.0-fragment.uv.y);
 
 	// Get the current texture color
 	vec4 color_image_texture = texture(image_texture, uv_image);
@@ -102,13 +108,13 @@ void main()
 	// ************************* //
 
 	// Compute the base color of the object based on: vertex color, uniform color, and texture
-	vec3 color_object  = fragment_color * color * color_image_texture.rgb;
+	vec3 color_object  = fragment.color * color * color_image_texture.rgb;
 
 	// Compute the final shaded color using Phong model
 	vec3 color_shading = (Ka + Kd * diffuse) * color_object + Ks * specular * vec3(1.0, 1.0, 1.0);
 	
 	// Compute color with fog
-	float distToCam = length(camera_position-fragment_position);
+	float distToCam = length(camera_position-fragment.position);
 	float fog = getFog(distToCam);
 
 
@@ -120,6 +126,9 @@ void main()
 
 	vec3 color_fog = actualBackgroundColor * fog + (1 - fog) * color_shading_illuminated;
 
+
+	float final_alpha = alpha * color_image_texture.a * min(1.5, 0.04 * distToCam);
+
 	// Output color, with the alpha component
-	FragColor = vec4(color_fog, alpha * color_image_texture.a);
+	FragColor = vec4(color_fog, final_alpha);
 }
