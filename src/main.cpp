@@ -1,6 +1,6 @@
 // Nathan GASC et Fabien ROGER - Ecole Polytechnique - INF443
 
-#include <mmsystem.h>  //For background music
+// #include <mmsystem.h>  //For background music
 
 #include <iostream>
 
@@ -21,7 +21,7 @@ int main(int, char* argv[]) {
 
     scene.initialize();
 
-    PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // plays music
+    // PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // plays music
 
     while (!glfwWindowShouldClose(window)) {
         // Reset the screen for a new frame
