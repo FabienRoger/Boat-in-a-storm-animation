@@ -5,6 +5,7 @@
 // Custom scene of this code
 #include "scene.hpp"
 
+#include <mmsystem.h>
 
 // *************************** //
 // Global Variables
@@ -29,7 +30,7 @@ GLFWwindow* standard_window_initialization(int width=0, int height=0);
 int main(int, char* argv[])
 {
 	std::cout << "Run " << argv[0] << std::endl;
-
+	
 
 	// ************************ //
 	//     INITIALISATION
@@ -48,6 +49,8 @@ int main(int, char* argv[])
 	//     Animation Loop
 	// ************************ //
 	std::cout<<"Start animation loop ..."<<std::endl;
+	auto a = TEXT("assets/rainFond.wav");
+	PlaySoundA(a, NULL, SND_FILENAME | SND_ASYNC);
 	while (!glfwWindowShouldClose(window))
 	{
 		// Reset the screen for a new frame

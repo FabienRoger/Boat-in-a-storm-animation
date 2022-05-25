@@ -19,6 +19,7 @@ void scene_structure::initialize()
     terrain.initialize();
     rain.initialize();
     boat.initialize();
+
 }
 
 void scene_structure::display() {
