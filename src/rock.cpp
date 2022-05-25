@@ -10,7 +10,7 @@ Rock::Rock() {}
 Rock::Rock(vec3 p, float r) : position(p), radius(r) {}
 
 void Rock::initialize(GLuint shader) {
-    // Fonction d'initialisation
+    // Initlialize the rock (as a sphere)
     rockMesh = mesh_primitive_sphere(radius);
     rockMeshDrawable.initialize(rockMesh, "rock");
     rockMeshDrawable.shader = shader;
@@ -18,15 +18,17 @@ void Rock::initialize(GLuint shader) {
     rockMeshDrawable.shading.color = {0.5f, 0.5f, 0.5f};
     rockMeshDrawable.transform.translation = position;
 
+    // Make the rock more interesting
     addPerlinNoise(0.5);
     cut(0);
     addPerlinNoise(0.3);
     cut(0.4);
     addPerlinNoise(0.2);
 
-    rockMesh.compute_normal();                            // Ne pas oublier les normales du mesh évoluent - PI
-    rockMeshDrawable.update_position(rockMesh.position);  // Mise à jour des positions - PI
-    rockMeshDrawable.update_normal(rockMesh.normal);      // et des normales. - PI
+    // Update its properties after it has been modified
+    rockMesh.compute_normal();
+    rockMeshDrawable.update_position(rockMesh.position);
+    rockMeshDrawable.update_normal(rockMesh.normal);
 }
 
 void Rock::addPerlinNoise(float amplitude) {
@@ -35,13 +37,20 @@ void Rock::addPerlinNoise(float amplitude) {
         float y = position.y;
         float z = position.z;
         float size = 0.6f;
-        vec3 delta = amplitude * position * noise_perlin({size * x, size * y, size * z}, 3, 0.02f, 5.0f);
+
+        float noise = noise_perlin({size * x, size * y, size * z}, 3, 0.02f, 5.0f);
+        vec3 delta = radius * amplitude * position * noise;
+
         position += delta;
     }
 }
 
 void Rock::cut(float cutLevel) {
+    // Choose a plane that cuts the rock at its center
     vec3 cutDirection = normalize(randVec3() - vec3(0.5, 0.5, 0.5));
+    // Shift it by cutLevel
+
+    // Project all the points beyond this plane on the plane
     for (auto& mposition : rockMesh.position) {
         float normDepth = dot(cutDirection, normalize(mposition));
         if (normDepth > cutLevel) {
@@ -53,6 +62,8 @@ void Rock::cut(float cutLevel) {
 }
 
 void Rock::draw(StormEnvironment const& environment) {
+    // Update the position : it can be changed by the environment
     rockMeshDrawable.transform.translation = position;
+
     cgp::draw(rockMeshDrawable, environment);
 }
