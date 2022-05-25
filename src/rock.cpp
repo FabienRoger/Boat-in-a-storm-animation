@@ -32,8 +32,9 @@ void Rock::initialize(GLuint shader) {
 
     addPerlinNoise(0.5);
     cut(0);
+    addPerlinNoise(0.3);
+    cut(0.4);
     addPerlinNoise(0.2);
-    cut(0.2);
 
     rockMesh.compute_normal();                         // Ne pas oublier les normales du mesh évoluent - PI
     rockMeshDrawable.update_position(rockMesh.position);  // Mise à jour des positions - PI

@@ -207,8 +207,8 @@ mat3 Boat::getBoatRotation() {
 
 void Boat::move(inputs_interaction_parameters inputs) {
     inputs_keyboard_parameters& keyboard = inputs.keyboard;
-    float rotationSpeed = 0.3; //0.03;
-    float acceleration = 1.1;
+    float rotationSpeed = 0.03;
+    float acceleration = 1.05;
     if (keyboard.up)
         boatFakeSpeed *= acceleration;
     if (keyboard.down)
