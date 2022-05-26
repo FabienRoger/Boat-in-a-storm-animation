@@ -52,11 +52,10 @@ void Rock::cut(float cutLevel) {
 
     // Project all the points beyond this plane on the plane
     for (auto& mposition : rockMesh.position) {
-        float normDepth = dot(cutDirection, normalize(mposition));
-        if (normDepth > cutLevel) {
-            float depth = dot(cutDirection, mposition);
+        float depth = dot(cutDirection, mposition);
+        if (depth > cutLevel) {
             vec3 projected = depth * cutDirection;
-            mposition -= projected;
+            mposition -= (depth - cutLevel) / depth * projected;
         }
     }
 }
