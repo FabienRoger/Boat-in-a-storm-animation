@@ -47,14 +47,14 @@ void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
             float x = terrain_mesh.position[k].x;
             float y = terrain_mesh.position[k].y;
 
-            float z = evaluate_terrain_height(x, y, t, fakePos);  
+            float z = evaluate_terrain_height(x, y, t, fakePos);
 
             terrain_mesh.position[k].z = z;
         }
     }
-    terrain_mesh.compute_normal();                         // Ne pas oublier les normales du mesh evoluent 
-    mesh_drawable.update_position(terrain_mesh.position);  // Mise a jour des positions 
-    mesh_drawable.update_normal(terrain_mesh.normal);      // et des normales. 
+    terrain_mesh.compute_normal();                         // Ne pas oublier les normales du mesh evoluent
+    mesh_drawable.update_position(terrain_mesh.position);  // Mise a jour des positions
+    mesh_drawable.update_normal(terrain_mesh.normal);      // et des normales.
 }
 
 void Terrain::create_empty_terrain() {

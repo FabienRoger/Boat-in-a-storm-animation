@@ -9,10 +9,13 @@
 
 using namespace cgp;
 
+// Overrite the opengl_uniform for this custom environment
 void opengl_uniform(GLuint shader, StormEnvironment const& environment) {
     opengl_uniform(shader, "projection", environment.projection.matrix());
     opengl_uniform(shader, "view", environment.camera.matrix_view());
     opengl_uniform(shader, "light", environment.light, false);
+
+    // Additional properties
     opengl_uniform(shader, "lightIntensity", environment.lightIntensity);
     opengl_uniform(shader, "lightningDirection", environment.lightningDirection);
     opengl_uniform(shader, "lightDirection", environment.lightDirection);
@@ -27,6 +30,7 @@ void StormEnvironment::update() {
     float t = timer.t;
 
     if (t > timeToNextLight) {
+        // Reset the timer
         lightUp();
     }
 

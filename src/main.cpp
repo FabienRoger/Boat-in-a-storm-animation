@@ -1,10 +1,11 @@
-//Nathan GASC et Fabien ROGER - Ecole Polytechnique - INF443
+// Nathan GASC et Fabien ROGER - Ecole Polytechnique - INF443
 
+// #include <mmsystem.h>  //For background music
 
 #include <iostream>
-#include "cgp/cgp.hpp" //3D library  
-#include "scene.hpp" 
-#include <mmsystem.h> //For background music
+
+#include "cgp/cgp.hpp"  //3D library
+#include "scene.hpp"
 
 // A helper tool to factorize common default functions (Window initialization, code that starts frame, etc)
 cgp::helper_common_scene helper_common;
@@ -15,14 +16,12 @@ scene_structure scene;
 GLFWwindow* standard_window_initialization(int width = 0, int height = 0);
 
 int main(int, char* argv[]) {
-
     // Standard Initialization with dimension in pixels
     GLFWwindow* window = standard_window_initialization();
 
     scene.initialize();
 
-    auto a = TEXT("assets/rainFond.wav");
-    PlaySoundA(a, NULL, SND_FILENAME | SND_ASYNC); //plays music
+    // PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // plays music
 
     while (!glfwWindowShouldClose(window)) {
         // Reset the screen for a new frame
@@ -85,6 +84,9 @@ GLFWwindow* standard_window_initialization(int width_target, int height_target) 
 
     // Initialize ImGUI
     cgp::imgui_init(window);
+    // Remove as much IMGUI as possible
+    ImGui_ImplGlfw_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
 
     // Set the callback functions for the inputs
     glfwSetKeyCallback(window, keyboard_callback);             // Event called when a keyboard touch is pressed/released
