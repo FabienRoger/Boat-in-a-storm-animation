@@ -3,8 +3,8 @@
 // Fragment shader - this code is executed for every pixel/fragment that belongs to a displayed shape
 
 // Inputs coming from the vertex shader
-flat in vec3 fragment_position; // position in the world space
-flat in vec3 fragment_normal;   // normal in the world space
+flat in vec3 fragment_position; // position in the world space, flat because of the low poly effect
+flat in vec3 fragment_normal;   // normal in the world space, flat because of the low poly effect
 in vec3 fragment_color;    // current color on the fragment
 in vec2 fragment_uv;       // current uv-texture on the fragment
 // Output of the fragment shader - output color

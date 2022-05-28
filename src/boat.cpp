@@ -209,9 +209,9 @@ void Boat::update_sail(const vec3& position, const mat3& rotation) {
         }
     }
 
-    sail_mesh.compute_normal();                              // Ne pas oublier les normales du mesh évoluent - PI
-    sail_mesh_drawable.update_position(sail_mesh.position);  // Mise à jour des positions - PI
-    sail_mesh_drawable.update_normal(sail_mesh.normal);      // et des normales. - PI
+    sail_mesh.compute_normal();                              
+    sail_mesh_drawable.update_position(sail_mesh.position); 
+    sail_mesh_drawable.update_normal(sail_mesh.normal);      
 }
 
 mat3 Boat::getBoatRotation() {

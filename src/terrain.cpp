@@ -18,7 +18,7 @@ void Terrain::initialize() {
 }
 
 float Terrain::evaluate_terrain_height(float x, float y, float t, vec3& fakePos) {
-    // Calcule la hauteur d'un point de coordonn�e xy au temps t, avec un décalage de fakePos (fausse position du bateau);
+    // Returns the height of the point (x,y) at t, with a shift of fakePos
     float h_0 = 5.0f;
     float omega = 0.1f;
     float A = 0.2f;
@@ -33,13 +33,14 @@ float Terrain::evaluate_terrain_height(float x, float y, float t, vec3& fakePos)
 }
 
 void Terrain::displayTerrain(environmentType const& environment, vec3& fakePos) {
+    //Displays the ocean
     timer.update();
     update_terrain_mesh(timer.t, fakePos);
-    draw(mesh_drawable, environment);  // fonction qui consomme la ressource
+    draw(mesh_drawable, environment); 
 }
 
 void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
-    // Modifie terrain_mesh en fonction du temps et applique ce nouveau mesh au drawable
+    // Updates the mesh and applies it to the drawable
     int N = N_terrain_samples;
     for (int ku = 0; ku < N; ++ku) {
         for (int kv = 0; kv < N; ++kv) {
@@ -52,14 +53,14 @@ void Terrain::update_terrain_mesh(float t, vec3& fakePos) {
             terrain_mesh.position[k].z = z;
         }
     }
-    terrain_mesh.compute_normal();                         // Ne pas oublier les normales du mesh evoluent
-    mesh_drawable.update_position(terrain_mesh.position);  // Mise a jour des positions
-    mesh_drawable.update_normal(terrain_mesh.normal);      // et des normales.
+    terrain_mesh.compute_normal();                         // Updating normals
+    mesh_drawable.update_position(terrain_mesh.position);  
+    mesh_drawable.update_normal(terrain_mesh.normal);      
 }
 
 void Terrain::create_empty_terrain() {
-    // Cree un mesh de taille N*N en initialisant les points a une hauteur de 0;
-    // Passer par mesh_primitive_grid consomme un petit plus de ressource lors de l'update
+    // Creates a N by N mesh with a strating height of 0
+    // Using mesh_primitive_grid use a little bit more ressources
 
     int N = N_terrain_samples;
     terrain_mesh.position.resize(N * N);
@@ -78,7 +79,7 @@ void Terrain::create_empty_terrain() {
         }
     }
 
-    // Creation des triangles:
+    // Creating triangles:
     for (int ku = 0; ku < N - 1; ++ku) {
         for (int kv = 0; kv < N - 1; ++kv) {
             unsigned int idx = kv + N * ku;
@@ -91,6 +92,5 @@ void Terrain::create_empty_terrain() {
         }
     }
 
-    // Le reste est rempli par des valeurs par d�faut:
     terrain_mesh.fill_empty_field();
 }

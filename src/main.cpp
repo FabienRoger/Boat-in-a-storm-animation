@@ -21,7 +21,7 @@ int main(int, char* argv[]) {
 
     scene.initialize();
 
-    // PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // plays music
+    // PlaySoundA(TEXT("assets/rainFond.wav"), NULL, SND_FILENAME | SND_ASYNC);  // Uncomment for background music
 
     while (!glfwWindowShouldClose(window)) {
         // Reset the screen for a new frame

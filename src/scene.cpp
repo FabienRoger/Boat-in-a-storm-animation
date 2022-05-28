@@ -26,7 +26,7 @@ void scene_structure::initialize() {
 
 void scene_structure::display() {
     environment.update();
-    // Update the camera's position so that it doesn't go bellow the water
+    // Update the camera's position so that it doesn't go below the water
     environment.camera.center_of_rotation.z =
         2 + 0.9 * terrain.evaluate_terrain_height(0, 0, terrain.timer.t, boat.boatFakePos);
 

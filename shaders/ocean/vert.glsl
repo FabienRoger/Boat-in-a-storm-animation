@@ -9,8 +9,8 @@ layout (location = 2) in vec3 color;     // vertex color      (r,g,b)
 layout (location = 3) in vec2 uv;        // vertex uv-texture (u,v)
 
 // Output variables sent to the fragment shader
-flat out vec3 fragment_position; // vertex position in world space
-flat out vec3 fragment_normal;   // normal position in world space
+flat out vec3 fragment_position; // vertex position in world space, flat because of the low poly effect
+flat out vec3 fragment_normal;   // normal position in world space, flat because of the low poly effect
 out vec3      fragment_color;    // vertex color
 out vec2      fragment_uv;       // vertex uv
 
