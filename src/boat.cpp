@@ -22,7 +22,7 @@ void Boat::initialize() {
 
     sail_mesh_drawable.initialize(sail_mesh, "sail");
     sail_mesh_drawable.shading.color = {1.0f, 1.0f, 1.0f};
-    sail_mesh_drawable.shading.phong.specular = 0.3f;
+    sail_mesh_drawable.shading.phong.specular = 0.2f;
 
     floatersSpeed.resize(nbFloaters, vec3(0, 0, 0));
 
@@ -214,9 +214,9 @@ void Boat::move(inputs_interaction_parameters inputs) {
     if (keyboard.down)
         boatFakeSpeed /= acceleration;
     if (keyboard.right)
-        rotateFloaters(rotationSpeed);
-    if (keyboard.left)
         rotateFloaters(-rotationSpeed);
+    if (keyboard.left)
+        rotateFloaters(rotationSpeed);
 
     boatFakePos += getFakeSpeed();
 }

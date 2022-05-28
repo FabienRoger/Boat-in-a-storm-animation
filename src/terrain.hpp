@@ -8,7 +8,7 @@ class Terrain {
     using environmentType = StormEnvironment;
     cgp::mesh_drawable mesh_drawable;
     cgp::mesh terrain_mesh;
-    int N_terrain_samples = 80;
+    int N_terrain_samples = 100;
     float terrain_length = 100;
     cgp::timer_basic timer;
 
